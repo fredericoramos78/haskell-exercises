@@ -22,7 +22,12 @@ cabal.project.local~
 .HTF/
 .ghc.environment.*
 
+*.aes
+
 ### Intellij
 .idea
 *.lock
 *.iml
+
+### VSCode
+*.code-workspace

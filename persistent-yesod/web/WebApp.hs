@@ -6,8 +6,11 @@ import Control.Monad.Reader
 
 newtype WebApp = WebApp ConnectionPool
 
+class HasWebApp m where 
+  getWebApp :: m WebApp 
+  
 
-runDB' :: Pool SqlBackend -> ReaderT SqlBackend IO a -> IO a 
-runDB' pool body = do
-  let result = runSqlPool body pool
-  liftIO result
+runDB' :: (HasWebApp m, MonadIO m) => SqlPersistT IO a -> m a 
+runDB' body = do
+  (WebApp pool) <- getWebApp  
+  liftIO $ runSqlPool body pool

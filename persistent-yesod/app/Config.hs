@@ -6,6 +6,7 @@ module Config where
 import Data.Time
 import Data.Yaml
 import Data.Yaml.Config (useEnv, loadYamlSettings)
+import Control.Monad.Reader
 
 
 
@@ -20,10 +21,10 @@ instance FromJSON AppSettings where
     pure AppSettings { weekStartsOnMonday = breakDay }
 
 
-readStartDayOfWeek :: IO DayOfWeek
+readStartDayOfWeek :: (MonadIO m) => m DayOfWeek
 readStartDayOfWeek = do 
-  settings <- loadYamlSettings ["config/settings.yaml"] [] useEnv
+  settings <- liftIO $ loadYamlSettings ["config/settings.yaml"] [] useEnv
   let isMonday = weekStartsOnMonday settings
-  pure $ if (isMonday) then Monday else Sunday  
+  pure $ if isMonday then Monday else Sunday  
   
   

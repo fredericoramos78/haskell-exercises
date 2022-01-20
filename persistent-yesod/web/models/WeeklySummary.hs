@@ -33,11 +33,9 @@ instance ToJSON LineItem where
       , "amount" .= amount
     ]
 
-readWeeklySummary :: WebApp -> IO WeeklySummary
-readWeeklySummary (WebApp pool) = do
-  (totalSpent, budget, allItems) <- runDB' pool $ do
-    s <- getLineItemsTotal
-    b <- getWeeklyBudget
-    i <- getAllItems
-    return (s, b, i)
-  return $ WeeklySummary totalSpent budget allItems
+readWeeklySummary :: (HasWebApp m, MonadIO m) => m WeeklySummary
+readWeeklySummary = runDB' $ do
+  s <- getLineItemsTotal
+  b <- getWeeklyBudget
+  i <- getAllItems
+  return $ WeeklySummary s b i

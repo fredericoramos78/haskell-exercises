@@ -21,8 +21,8 @@ instance ToJSON AppConfig where
           , "weekly-budget"  .= weeklyBudget
           ]
 
-loadAppConfig :: WebApp -> IO AppConfig 
-loadAppConfig (WebApp pool) = do 
-  budget <- runDB' pool getWeeklyBudget 
-  startOfWeek <- readStartDayOfWeek
+loadAppConfig :: (HasWebApp m, MonadIO m) => m AppConfig 
+loadAppConfig = do 
+  budget <- runDB' getWeeklyBudget 
+  startOfWeek <- liftIO readStartDayOfWeek
   return $ AppConfig Monday budget

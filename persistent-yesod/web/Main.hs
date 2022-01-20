@@ -2,6 +2,7 @@
 {-# LANGUAGE QuasiQuotes           #-}
 {-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
+{-# LANGUAGE FlexibleInstances     #-}
 
 module MainWeb where
   
@@ -20,6 +21,7 @@ import Models.WeeklySummary
 instance Yesod WebApp
 
 
+
 -- First string parameter must match data time defined above
 mkYesod "WebApp" [parseRoutes|
 / HomeR GET
@@ -27,21 +29,19 @@ mkYesod "WebApp" [parseRoutes|
 /summary WeeklySummaryR GET 
 |]
 
+-- remember that `Handler` is a type alias for `HandlerFor WebApp` 
+instance HasWebApp (HandlerFor WebApp) where 
+  getWebApp = getYesod
+
 getHomeR :: Handler Html
 getHomeR = redirect ConfigListR
 
 getConfigListR :: Handler Value
-getConfigListR = do 
-  webapp <- getYesod
-  configs <- liftIO $ loadAppConfig webapp
-  returnJson configs
+getConfigListR = loadAppConfig >>= returnJson
 
 getWeeklySummaryR :: Handler Value  
-getWeeklySummaryR = do 
-  webapp <- getYesod
-  summary <- liftIO $ readWeeklySummary webapp 
-  returnJson summary 
-
+getWeeklySummaryR = readWeeklySummary >>= returnJson  
+  
 main :: IO ()
 main = do
   pool <- runStderrLoggingT $ S.createPostgresqlPool "postgresql://lunch:pass123@localhost:5432/lunchdb" 1
