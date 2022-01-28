@@ -1,0 +1,3 @@
+/ HomeR GET
+/config ConfigListR GET 
+/summary WeeklySummaryR GET 

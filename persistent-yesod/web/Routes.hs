@@ -12,11 +12,7 @@ import WebApp
 instance Yesod WebApp
 
 -- First string parameter must match data time defined above
-mkYesodData "WebApp" [parseRoutes|
-/ HomeR GET
-/config ConfigListR GET 
-/summary WeeklySummaryR GET 
-|]
+mkYesodData "WebApp" $(parseRoutesFile "config/routes")
 
 -- remember that `Handler` is a type alias for `HandlerFor WebApp` 
 instance HasWebApp (HandlerFor WebApp) where 

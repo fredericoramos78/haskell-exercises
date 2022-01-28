@@ -30,6 +30,9 @@ import Models.WeeklySummary
 mkYesodDispatch "WebApp" resourcesWebApp
 
 ---- CHALLENGE #2: move routes into a yesod file
+-- Not much to say. We replace `[parseRoutes|...]` inline code with a function call which single param is a file. The contents of the file
+--   is basically the same as we had before in the enclosing `[...]`. That code change was all in the `Routes` module.
+
 ---- CHALLENGE #3: entities into their own file
 ---- CHALLENGE #4: Handlers returning more specific types (not the generic `Value`)  
   
