@@ -2,7 +2,6 @@
 {-# LANGUAGE QuasiQuotes           #-}
 {-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
-{-# LANGUAGE FlexibleInstances     #-}
 
 module MainWeb where
   
@@ -13,34 +12,26 @@ import Control.Monad.Trans.Resource (runResourceT)
 
 import InitDB
 import WebApp
+import Routes
+import Handlers
 
 import Models.AppConfig
 import Models.WeeklySummary
 
 
-instance Yesod WebApp
+---- CHALLENGE #1: move handlers into their own module!
+-- Context:
+--  `mkYesod` is a combination of `mkYesodData` and `mkYesodDispatch`. The former is how our routes & handlers are connected to Yesod machinery. The latter handles the link
+--    between URLs and our handler functions.
+-- Details: 
+-- * https://stackoverflow.com/questions/56722924/split-yesod-app-source-code-into-multiple-source-files
+-- * https://stackoverflow.com/questions/65887147/where-does-the-resourcesapp-come-from-in-yesod
+-- * https://www.schoolofhaskell.com/school/advanced-haskell/building-a-file-hosting-service-in-yesod/part%202
+mkYesodDispatch "WebApp" resourcesWebApp
 
-
-
--- First string parameter must match data time defined above
-mkYesod "WebApp" [parseRoutes|
-/ HomeR GET
-/config ConfigListR GET 
-/summary WeeklySummaryR GET 
-|]
-
--- remember that `Handler` is a type alias for `HandlerFor WebApp` 
-instance HasWebApp (HandlerFor WebApp) where 
-  getWebApp = getYesod
-
-getHomeR :: Handler Html
-getHomeR = redirect ConfigListR
-
-getConfigListR :: Handler Value
-getConfigListR = loadAppConfig >>= returnJson
-
-getWeeklySummaryR :: Handler Value  
-getWeeklySummaryR = readWeeklySummary >>= returnJson  
+---- CHALLENGE #2: move routes into a yesod file
+---- CHALLENGE #3: entities into their own file
+---- CHALLENGE #4: Handlers returning more specific types (not the generic `Value`)  
   
 main :: IO ()
 main = do
