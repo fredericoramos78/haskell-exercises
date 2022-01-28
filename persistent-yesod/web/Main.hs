@@ -36,6 +36,9 @@ mkYesodDispatch "WebApp" resourcesWebApp
 --   is basically the same as we had before in the enclosing `[...]`. That code change was all in the `Routes` module.
 
 ---- CHALLENGE #3: Handlers returning more specific types (not the generic `Value`)  
+-- Yesod has this `JSONResponse a` data type that allows for defining the return of a handler function using a more domain-specific `a` type.
+-- Behind the scenes it will handle the conversion of that `a` into a JSON value as long as the `a` type has an instance for `ToJSON` type class.
+-- Now all handlers can be of type `Handler (JSONResonse MyDomainType)` instead of the generic `Handler Value`
 
 ---- CHALLENGE #4: entity types getting auto generated via `.persistentmodel` files instead of what we have at `InitDB` right now
   
