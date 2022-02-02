@@ -6,6 +6,7 @@ import Yesod.Core.Types
 import Models.AppConfig
 import Models.WeeklySummary
 import Models.RunningWeekItems
+import Models.WeeklySpendHistory
 import Routes
 import WebApp
 
@@ -29,3 +30,6 @@ getWeeklySummaryR = JSONResponse <$> readWeeklySummary
 
 getItemsForRunningWeekR :: Handler (JSONResponse [LineItem])
 getItemsForRunningWeekR = JSONResponse <$> readRunningWeekItems  
+
+getWeeklySpendHistoryR :: Handler (JSONResponse [WeeklySpendHistory])
+getWeeklySpendHistoryR = JSONResponse <$> readSpendHistory

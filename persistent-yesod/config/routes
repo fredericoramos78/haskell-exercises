@@ -2,3 +2,4 @@
 /config  ConfigListR          GET 
 /summary WeeklySummaryR       GET 
 /items   ItemsForRunningWeekR GET
+/history WeeklySpendHistoryR  GET

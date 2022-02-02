@@ -42,3 +42,9 @@ setWeeklySpent week amount = do
       then pure False 
       -- using `>>` as opposed to a `do` notation just to exercise it ;)
       else insert_ (WeeklySpendHistory week amount) >> return True
+
+getWeeklySpendHistory :: (MonadIO m) => SqlPersistT m [WeeklySpendHistory]
+getWeeklySpendHistory = do
+  spentHistory <- select $ do
+    from $ table @WeeklySpendHistory
+  return $ entityVal <$> spentHistory

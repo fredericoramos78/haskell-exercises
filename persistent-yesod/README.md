@@ -69,7 +69,7 @@ The implemented URIs for the web executable can be found at `web/Main.hs`.
 
 #### v1.3
 - [x] list weekly items
-- [ ] list spend history
+- [x] list spend history
 - [ ] check reset week alert
 
 #### v1.4
