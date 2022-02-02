@@ -5,6 +5,8 @@ module Models.WeeklySummary where
 
 import InitDB
 import BudgetDB
+import BudgetMgr
+import Config
 import LineItemDB
 import WebApp
 
@@ -18,7 +20,8 @@ import Database.Esqueleto.Experimental
 data WeeklySummary = WeeklySummary {
     spent :: Double,
     budget :: Double,
-    items :: [LineItem]
+    items :: [LineItem],
+    isStartOfWeek :: Bool
   }
 
 instance ToJSON WeeklySummary where
@@ -27,11 +30,17 @@ instance ToJSON WeeklySummary where
       , "budget"  .= budget
       , "remaining" .= (budget - spent)
       , "items" .= items
+      , "isStartOfWeek" .= isStartOfWeek
     ]
 
 readWeeklySummary :: (HasWebApp m, MonadIO m) => m WeeklySummary
 readWeeklySummary = runDB' $ do
-  s <- getLineItemsTotal
-  b <- getWeeklyBudget
-  i <- getAllItems
-  return $ WeeklySummary s b i
+  spent <- getLineItemsTotal
+  budget <- getWeeklyBudget
+  items <- getAllItems
+  -- can rewrite to liftIO $ readStartDayOfWeek >>= newWeekCheck
+  -- not sure if that's preferred or not
+  isStartOfWeek <- liftIO $ do
+    d <- readStartDayOfWeek
+    newWeekCheck d
+  return $ WeeklySummary {..}

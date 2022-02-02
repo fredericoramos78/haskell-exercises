@@ -1,6 +1,5 @@
 {-# LANGUAGE RecordWildCards   #-}
 {-# LANGUAGE OverloadedStrings #-}
-
 module Models.AppConfig where 
   
 import Config
@@ -23,6 +22,6 @@ instance ToJSON AppConfig where
 
 loadAppConfig :: (HasWebApp m, MonadIO m) => m AppConfig 
 loadAppConfig = do 
-  budget <- runDB' getWeeklyBudget 
-  startOfWeek <- liftIO readStartDayOfWeek
-  return $ AppConfig Monday budget
+  weeklyBudget <- runDB' getWeeklyBudget 
+  weekStartDay <- liftIO readStartDayOfWeek
+  return $ AppConfig {..}

@@ -28,7 +28,7 @@ getConfigListR = JSONResponse <$> loadAppConfig
 getWeeklySummaryR :: Handler (JSONResponse WeeklySummary)
 getWeeklySummaryR = JSONResponse <$> readWeeklySummary
 
-getItemsForRunningWeekR :: Handler (JSONResponse [LineItem])
+getItemsForRunningWeekR :: Handler (JSONResponse RunningWeekItems)
 getItemsForRunningWeekR = JSONResponse <$> readRunningWeekItems  
 
 getWeeklySpendHistoryR :: Handler (JSONResponse [WeeklySpendHistory])
