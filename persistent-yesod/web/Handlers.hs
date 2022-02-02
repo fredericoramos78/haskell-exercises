@@ -14,9 +14,9 @@ getHomeR = redirect ConfigListR
 
 getConfigListR :: Handler (JSONResponse AppConfig)
 -- Type rationale:
--- loadAppConfig is m (AppConfig)
--- JSONResponse is a -> JSONResponse a
--- f-mapping will give me m (JSONResponse AppConfig)
+-- `loadAppConfig` is `m (AppConfig)`
+-- `JSONResponse` is `a -> JSONResponse a`
+-- f-mapping will lift `JSONResponse a` over m, giving m (JSONResponse AppConfig)
 --    and since this function is in the `Handler x` context, `m` will be
 --    concretized into `Handler` to finally get `Handler (JSONResponse AppConfig)`
 getConfigListR = JSONResponse <$> loadAppConfig
