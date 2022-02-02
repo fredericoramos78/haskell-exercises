@@ -41,6 +41,19 @@ mkYesodDispatch "WebApp" resourcesWebApp
 -- Now all handlers can be of type `Handler (JSONResonse MyDomainType)` instead of the generic `Handler Value`
 
 ---- CHALLENGE #4: entity types getting auto generated via `.persistentmodel` files instead of what we have at `InitDB` right now
+-- MWB handles this via two combined changes: first it breaks the `share` block in `InitDB` (more precisely the `mkPersist` call) into multiple 
+-- calls, each from a different file/module representing a particular entity. Those are named like `PersistentModels.<EntityName>`. That 
+-- `mkPersist(With)` expects a couple of arguments, one of which is the model/entity defition. And that's where the second strategy comes in.
+--
+-- MWB uses the `persistFileWith` to load up the entity defition from a text file. That's an alternative for the TH (Template Haskell) code embedded 
+-- in the `share` block in `InitDB`. 
+--
+-- I'm not going to replicate all that here but for more details on all this check:
+-- * `src/PersistentModels/Import.hs` and look at `mkModel`. This function encapsulates the `mkPersistWith` call and the loading of the entity TH code
+--   from file.
+-- * `src/PersistentModels/Organization.hs` (or any other entity module) to see that function in action. It relies on splices available via TH
+--
+-- BTW, migration in MWB is handled using `Rails`, thus outside of the scope of `persistent`. Another reason not to try to replicate all that in here.
   
 main :: IO ()
 main = do
