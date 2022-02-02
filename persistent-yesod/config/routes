@@ -1,3 +1,4 @@
-/ HomeR GET
-/config ConfigListR GET 
-/summary WeeklySummaryR GET 
+/        HomeR                GET
+/config  ConfigListR          GET 
+/summary WeeklySummaryR       GET 
+/items   ItemsForRunningWeekR GET

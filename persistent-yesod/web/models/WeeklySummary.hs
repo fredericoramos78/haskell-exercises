@@ -8,6 +8,8 @@ import BudgetDB
 import LineItemDB
 import WebApp
 
+import Models.RunningWeekItems
+
 import Yesod
 import Control.Monad
 import Database.Esqueleto.Experimental
@@ -25,12 +27,6 @@ instance ToJSON WeeklySummary where
       , "budget"  .= budget
       , "remaining" .= (budget - spent)
       , "items" .= items
-    ]
-
-instance ToJSON LineItem where
-  toJSON (LineItem name amount) = object
-    [   "name" .= name
-      , "amount" .= amount
     ]
 
 readWeeklySummary :: (HasWebApp m, MonadIO m) => m WeeklySummary

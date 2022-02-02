@@ -5,9 +5,12 @@ import Yesod.Core.Types
 
 import Models.AppConfig
 import Models.WeeklySummary
+import Models.RunningWeekItems
 import Routes
 import WebApp
 
+import InitDB
+import LineItemDB
 
 getHomeR :: Handler Html
 getHomeR = redirect ConfigListR
@@ -23,3 +26,6 @@ getConfigListR = JSONResponse <$> loadAppConfig
 
 getWeeklySummaryR :: Handler (JSONResponse WeeklySummary)
 getWeeklySummaryR = JSONResponse <$> readWeeklySummary
+
+getItemsForRunningWeekR :: Handler (JSONResponse [LineItem])
+getItemsForRunningWeekR = JSONResponse <$> readRunningWeekItems  
