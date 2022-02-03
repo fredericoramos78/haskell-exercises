@@ -72,15 +72,6 @@ mainWithBudget budget = do
   runAppT (bootstrapDB budget newItems) env
   runAppT runApp env
 
-resetWeek :: Bool -> AppT (Bool, Int)
-resetWeek False = return (False, 0)
-resetWeek _ = do
-  weekId <- liftIO calculateThisWeek
-  runDB $ do
-    existingTotal <- getLineItemsTotal
-    deleteCount <- cleanupLineItems
-    weekSumCreated <- setWeeklySpent weekId existingTotal
-    pure (weekSumCreated, deleteCount)
 
 
 

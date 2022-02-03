@@ -28,13 +28,13 @@ instance FromJSON PostLineItemRequest where
 requestToLineItem :: PostLineItemRequest -> LineItem 
 requestToLineItem PostLineItemRequest {..} = LineItem name amount
 
-postLineItemR :: Handler (JSONResponse WeeklySummary)
+postLineItemR :: Handler WeeklySummary
 postLineItemR = do 
     parseResult <- parseCheckJsonBody
     case parseResult of
         Success item -> do
             runDB' $ insertNewItem $ requestToLineItem item
-            JSONResponse <$> readWeeklySummary
+            readWeeklySummary
         Error msg -> 
             invalidArgs [pack msg]
 

@@ -1,7 +1,8 @@
-/        HomeR                GET
-/config  ConfigListR          GET 
-/summary WeeklySummaryR       GET 
-/items   ItemsForRunningWeekR GET
-/history WeeklySpendHistoryR  GET
-/budget  BudgetAmountR        PUT
-/item    LineItemR            POST
+/           HomeR                GET
+/config     ConfigListR          GET 
+/summary    WeeklySummaryR       GET 
+/items      ItemsForRunningWeekR GET
+/history    WeeklySpendHistoryR  GET
+/budget     BudgetAmountR        PUT
+/item       LineItemR            POST
+/resetWeek  ResetWeekR           POST

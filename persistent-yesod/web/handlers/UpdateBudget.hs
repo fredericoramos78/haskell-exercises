@@ -7,6 +7,7 @@ import Data.Aeson.Types
 import Data.Text (pack)
 
 import Models.WeeklySummary
+import Models.WeeklySpendHistory
 import Routes
 import WebApp
 
@@ -23,7 +24,7 @@ data PutBudgetAmountRequest = PutBudgetAmountRequest
 instance FromJSON PutBudgetAmountRequest where 
     parseJSON (Object v) = PutBudgetAmountRequest <$> (v .: "amount")
 
-putBudgetAmountR :: Handler (JSONResponse WeeklySummary)
+putBudgetAmountR :: Handler WeeklySummary
 putBudgetAmountR = do 
     -- returns a `Result a` which can be either a `Success` or `Error`
     -- https://hackage.haskell.org/package/yesod-core-1.6.21.0/docs/Yesod-Core-Json.html#v:parseCheckJsonBody
@@ -31,10 +32,13 @@ putBudgetAmountR = do
     case parseResult of
         Success (PutBudgetAmountRequest amt) -> do
             runDB' $ setWeeklyBudget amt True
-            JSONResponse <$> readWeeklySummary
+            readWeeklySummary
         Error msg -> 
             invalidArgs [pack msg]
 
-
+postResetWeekR :: Handler [WeeklySpendHistory]
+postResetWeekR = do 
+    runDB' $ resetWeek True 
+    readSpendHistory 
 
      

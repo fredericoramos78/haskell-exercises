@@ -5,11 +5,10 @@ import Data.Char (toLower)
 import Data.Time
 import Control.Monad.Reader
 
+import BudgetCommons
 import CalUtils
 import Config
 
-defaultWeeklyBudget :: Double
-defaultWeeklyBudget = 100
 
 newWeekCheck :: DayOfWeek -> IO Bool
 newWeekCheck weekBreakDay = do  
@@ -29,4 +28,3 @@ withDefault d r = if null r then d else r
 
 isStartOfTheWeek :: MonadIO m => m Bool 
 isStartOfTheWeek = liftIO $ readStartDayOfWeek >>= newWeekCheck
- 

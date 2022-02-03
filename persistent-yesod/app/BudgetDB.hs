@@ -9,7 +9,10 @@ import Database.Persist.Postgresql as S (exists, (==.))
 import Database.Esqueleto.Experimental
 
 import InitDB 
-import BudgetMgr
+import LineItemDB
+import BudgetCommons
+import CalUtils
+--import BudgetMgr
 
 getWeeklyBudget :: (MonadIO m) => SqlPersistT m Double  
 getWeeklyBudget = do
@@ -51,3 +54,12 @@ getWeeklySpendHistory = do
   spentHistory <- select $ do
     from $ table @WeeklySpendHistory
   return $ entityVal <$> spentHistory
+
+resetWeek :: (MonadIO m) => Bool -> SqlPersistT m (Bool, Int)
+resetWeek False = return (False, 0)
+resetWeek _ = do
+  weekId <- liftIO calculateThisWeek
+  existingTotal <- getLineItemsTotal
+  deleteCount <- cleanupLineItems
+  weekSumCreated <- setWeeklySpent weekId existingTotal
+  pure (weekSumCreated, deleteCount)

@@ -75,5 +75,5 @@ The implemented URIs for the web executable can be found at `web/Main.hs`.
 #### v1.4
 - [x] update budget (return will be similar to weekly summary)
 - [x] add items (return will be similar to weekly summary)
-- [ ] trigger weekly reset 
+- [x] trigger weekly reset 
 
