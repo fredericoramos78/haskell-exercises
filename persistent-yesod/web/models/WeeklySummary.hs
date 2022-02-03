@@ -35,12 +35,6 @@ instance ToJSON WeeklySummary where
     , "isStartOfWeek" .= isStartOfWeek
     ]
 
-instance ToTypedContent WeeklySummary where 
-  toTypedContent = TypedContent typeJson . toContent
-
-instance ToContent WeeklySummary where 
-  toContent = toContent . encode
-
 readWeeklySummary :: (HasWebApp m, MonadIO m) => m WeeklySummary
 readWeeklySummary = runDB' $ do
   spent <- getLineItemsTotal

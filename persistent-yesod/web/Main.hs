@@ -13,6 +13,7 @@ import Control.Monad.Trans.Resource (runResourceT)
 import InitDB
 import WebApp
 import Routes
+import Orphans
 import Handlers.GetHandlers
 import Handlers.UpdateBudget
 import Handlers.PostLineItem
