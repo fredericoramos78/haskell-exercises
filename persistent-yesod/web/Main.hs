@@ -15,6 +15,7 @@ import WebApp
 import Routes
 import Handlers.GetHandlers
 import Handlers.UpdateBudget
+import Handlers.PostLineItem
 
 import Models.AppConfig
 import Models.WeeklySummary

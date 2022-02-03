@@ -9,6 +9,9 @@ import Database.Esqueleto.Experimental
 
 import InitDB
 
+insertNewItem :: (MonadIO m) => LineItem -> SqlPersistT m ()
+insertNewItem i = insertNewItems [i]
+
 insertNewItems :: (MonadIO m)  => [LineItem] -> SqlPersistT m ()
 insertNewItems = insertMany_
 

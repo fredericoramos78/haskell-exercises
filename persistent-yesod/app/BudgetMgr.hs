@@ -3,8 +3,10 @@ module BudgetMgr where
   
 import Data.Char (toLower)
 import Data.Time
+import Control.Monad.Reader
 
 import CalUtils
+import Config
 
 defaultWeeklyBudget :: Double
 defaultWeeklyBudget = 100
@@ -24,4 +26,7 @@ newWeekCheck weekBreakDay = do
 
 withDefault :: String -> String -> String 
 withDefault d r = if null r then d else r  
+
+isStartOfTheWeek :: MonadIO m => m Bool 
+isStartOfTheWeek = liftIO $ readStartDayOfWeek >>= newWeekCheck
  

@@ -4,3 +4,4 @@
 /items   ItemsForRunningWeekR GET
 /history WeeklySpendHistoryR  GET
 /budget  BudgetAmountR        PUT
+/item    LineItemR            POST

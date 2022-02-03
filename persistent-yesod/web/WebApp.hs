@@ -1,4 +1,4 @@
-module WebApp where 
+module WebApp where
   
 import Database.Persist.Postgresql as S
 import Data.Pool

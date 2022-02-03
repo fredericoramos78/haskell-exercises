@@ -46,9 +46,5 @@ readWeeklySummary = runDB' $ do
   spent <- getLineItemsTotal
   budget <- getWeeklyBudget
   items <- getAllItems
-  -- can rewrite to `liftIO $ readStartDayOfWeek >>= newWeekCheck`
-  -- not sure if that's preferred or not
-  isStartOfWeek <- liftIO $ do
-    d <- readStartDayOfWeek
-    newWeekCheck d
+  isStartOfWeek <- isStartOfTheWeek
   return $ WeeklySummary {..}
