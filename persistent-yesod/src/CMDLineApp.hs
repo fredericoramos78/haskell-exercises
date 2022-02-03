@@ -39,6 +39,6 @@ initMigration = do
 bootstrapDB :: Double -> [LineItem] -> AppT ()
 bootstrapDB weeklyBudget lineItems = do
   runDB $ do
-    setWeeklyBudget weeklyBudget
+    addWeeklyBudget weeklyBudget
     insertNewItems lineItems
   liftIO $ putStrLn "budget initialized"

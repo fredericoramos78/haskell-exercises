@@ -1,11 +1,11 @@
-{-# LANGUAGE TypeApplications           #-}
-
+{-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE RecordWildCards  #-}
 module BudgetDB where 
   
 import Control.Monad.Reader
-import Data.Maybe (fromMaybe)
+import Data.Maybe (fromMaybe, isJust)
 
-import Database.Persist.Postgresql as S 
+import Database.Persist.Postgresql as S (exists, (==.)) 
 import Database.Esqueleto.Experimental
 
 import InitDB 
@@ -23,16 +23,19 @@ getWeeklyBudget = do
   pure $ fromMaybe defaultWeeklyBudget $ fmap unValue budget 
   
 -- updates the weekly budget (or inserts it if there's no row -- aka upsert)    
-setWeeklyBudget :: (MonadIO m) => Double -> SqlPersistT m ()
-setWeeklyBudget amt =  do
-  budgetExists <- S.exists [BudgetAmount S.!=. 0]
- 
-  if budgetExists
-    -- now that we're in a long-term persistent storage, it's time to stop
-    --    updating the budget each time we run the program
-    then pure ()
-    else insert_ $ Budget amt True
+setWeeklyBudget :: (MonadIO m) => Double -> Bool -> SqlPersistT m ()
+setWeeklyBudget amt overrideIfExists =  do
+  budget <- selectOne $ from $ table @Budget
+  case (budget, overrideIfExists) of
+    (Nothing, _) -> insert_ $ Budget amt True
+    (Just budget, True) -> update $ \b -> do
+      -- will keep which ever start day is configured
+      set b [ BudgetAmount =. val amt ]
+    _ -> pure()
     
+-- version of `setWeeklyBudget` that only inserts (=doesn't update)
+addWeeklyBudget :: (MonadIO m) => Double -> SqlPersistT m ()
+addWeeklyBudget = flip setWeeklyBudget False 
 
 setWeeklySpent :: (MonadIO m) => Int -> Double -> SqlPersistT m Bool
 setWeeklySpent week amount = do 

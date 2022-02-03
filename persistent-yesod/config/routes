@@ -3,3 +3,4 @@
 /summary WeeklySummaryR       GET 
 /items   ItemsForRunningWeekR GET
 /history WeeklySpendHistoryR  GET
+/budget  BudgetAmountR        PUT

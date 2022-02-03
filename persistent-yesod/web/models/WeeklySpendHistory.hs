@@ -10,8 +10,8 @@ import Yesod
 
 instance ToJSON WeeklySpendHistory where
   toJSON (WeeklySpendHistory week amount) = object
-    [   "weekOfYear" .= week
-      , "amount" .= amount
+    [ "weekOfYear" .= week
+    , "amount" .= amount
     ]
 
 readSpendHistory :: (HasWebApp m, MonadIO m) => m [WeeklySpendHistory]

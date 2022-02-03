@@ -10,22 +10,25 @@ import WebApp
 
 import Yesod
 
-data RunningWeekItems = RunningWeekItems {
-    items :: [LineItem],
-    isStartOfWeek :: Bool
+data RunningWeekItems = RunningWeekItems 
+  { items :: [LineItem]
+  , isStartOfWeek :: Bool
   }
 
 instance ToJSON RunningWeekItems where
   toJSON RunningWeekItems {..} = object
-    [   "items" .= items
-      , "isStartOfWeek" .= isStartOfWeek
+    [ "items" .= items
+    , "isStartOfWeek" .= isStartOfWeek
     ]
 
--- why this doesn't work with the record wildcard ?
+-- Q: why this doesn't work with the record wildcard ?
+-- A: It does if we use the correct field extraction function names. Remember that 
+--    Persitent generates those as `[typeName][fieldName]`. 
+--    That's why in this case it's not just `name`; it's `lineItemName`.
 instance ToJSON LineItem where
-  toJSON (LineItem name amount) = object
-    [   "name" .= name
-      , "amount" .= amount
+  toJSON LineItem {..} = object
+    [ "name" .= lineItemName
+    , "amount" .= lineItemAmount
     ]
 
 readRunningWeekItems :: (HasWebApp m, MonadIO m) => m RunningWeekItems

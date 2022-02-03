@@ -13,7 +13,8 @@ import Control.Monad.Trans.Resource (runResourceT)
 import InitDB
 import WebApp
 import Routes
-import Handlers
+import Handlers.GetHandlers
+import Handlers.UpdateBudget
 
 import Models.AppConfig
 import Models.WeeklySummary

@@ -4,6 +4,7 @@
 {-# LANGUAGE TypeFamilies          #-}
 {-# LANGUAGE FlexibleInstances     #-}
 
+-- Usually called Foundation with all instances
 module Routes where 
 
 import Yesod 

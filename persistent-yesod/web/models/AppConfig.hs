@@ -10,15 +10,15 @@ import Data.Time
 import Yesod
   
 data AppConfig = AppConfig 
-  { weekStartDay :: DayOfWeek, 
-    weeklyBudget :: Double 
+  { weekStartDay :: DayOfWeek
+  , weeklyBudget :: Double 
   } deriving Show
 
 instance ToJSON AppConfig where 
   toJSON AppConfig {..} = object
-          [ "week-starts-at" .= weekStartDay
-          , "weekly-budget"  .= weeklyBudget
-          ]
+    [ "week-starts-at" .= weekStartDay
+    , "weekly-budget"  .= weeklyBudget
+    ]
 
 loadAppConfig :: (HasWebApp m, MonadIO m) => m AppConfig 
 loadAppConfig = do 

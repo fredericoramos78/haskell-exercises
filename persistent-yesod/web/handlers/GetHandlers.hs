@@ -1,4 +1,4 @@
-module Handlers where 
+module Handlers.GetHandlers where 
 
 import Yesod
 import Yesod.Core.Types
@@ -25,11 +25,13 @@ getConfigListR :: Handler (JSONResponse AppConfig)
 --    concretized into `Handler` to finally get `Handler (JSONResponse AppConfig)`
 getConfigListR = JSONResponse <$> loadAppConfig
 
-getWeeklySummaryR :: Handler (JSONResponse WeeklySummary)
-getWeeklySummaryR = JSONResponse <$> readWeeklySummary
+getWeeklySummaryR :: Handler WeeklySummary
+getWeeklySummaryR = readWeeklySummary
 
 getItemsForRunningWeekR :: Handler (JSONResponse RunningWeekItems)
 getItemsForRunningWeekR = JSONResponse <$> readRunningWeekItems  
 
 getWeeklySpendHistoryR :: Handler (JSONResponse [WeeklySpendHistory])
 getWeeklySpendHistoryR = JSONResponse <$> readSpendHistory
+
+     
