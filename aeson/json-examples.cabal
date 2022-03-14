@@ -20,5 +20,6 @@ executable json-examples
   build-depends:       base >= 4.7 && < 5,
                        mtl,
                        aeson,
-                       text
+                       text,
+		       time
 
